@@ -1,0 +1,83 @@
+.card {
+    font-family: 'Poppins', sans-serif;
+    max-width: 20rem;
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+}
+
+@media (min-width: 640px) {
+    .card {
+        max-width: 28rem;
+    }
+}
+
+@media (min-width: 768px) {
+    .card {
+        max-width: 32rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .card {
+        max-width: 36rem;
+    }
+}
+
+@media (min-width: 1280px) {
+    .card {
+        max-width: 42rem;
+    }
+}
+
+.group:hover .play-icon {
+    opacity: 1;
+}
+
+.card-image {
+    width: 100%;
+    transition: transform 0.3s;
+}
+
+.play-icon {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.icon.icon-tabler.icon-tabler-player-play-filled {
+    transition: transform 0.3s;
+}
+
+.group:hover .icon.icon-tabler.icon-tabler-player-play-filled {
+    transform: scale(0.9);
+}
+
+.card-content {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background: linear-gradient(to top, black, transparent);
+    color: white;
+    padding: 0.5rem 1rem;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+.card-title {
+    font-weight: 500;
+    font-size: 0.875rem;
+    margin-bottom: 0.25rem;
+}
+
+.card-date {
+    color: #bab9be;
+    font-size: 0.875rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}

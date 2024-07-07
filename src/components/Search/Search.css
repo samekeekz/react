@@ -1,33 +1,33 @@
 .search-component {
-    align-self: center;
-    flex-shrink: 0;
-    max-width: 500px;
-    width: 100%;
+  align-self: center;
+  flex-shrink: 0;
+  max-width: 500px;
+  width: 100%;
 }
 
 .search-container {
-    position: relative;
-    display: flex;
-    width: 100%;
+  position: relative;
+  display: flex;
+  width: 100%;
 }
 
 .search-input {
-    width: 100%;
-    padding: 0.75rem 1rem;
-    font-size: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    outline: none;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  outline: none;
 }
 
 .search-icon {
-    position: absolute;
-    top: 50%;
-    right: 1rem;
-    transform: translateY(-50%);
-    cursor: pointer;
+  position: absolute;
+  top: 50%;
+  right: 1rem;
+  transform: translateY(-50%);
+  cursor: pointer;
 }
 
 .search-icon:hover {
-    stroke: #5795f7;
+  stroke: #5795f7;
 }

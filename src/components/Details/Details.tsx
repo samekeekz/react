@@ -1,4 +1,7 @@
-import Loader from "../Loader/Loader.tsx";
+import { useEffect, useState } from "react";
+import "./Details.css";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import Loader from "../Loader/Loader";
 
 interface Collection {
   id: number;
@@ -58,13 +61,11 @@ interface MovieDetailsType {
   vote_count: number;
 }
 
-import { useEffect, useState } from "react";
-import "./Details.css";
-import { useParams } from "react-router-dom";
-
 const Details = () => {
   const [movie, setMovie] = useState<MovieDetailsType | null>(null);
   const { id } = useParams<{ id: string }>();
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -81,8 +82,6 @@ const Details = () => {
             },
           }
         );
-
-        console.log("1");
 
         if (!response.ok) {
           console.error("Error:", response.statusText);
@@ -101,10 +100,20 @@ const Details = () => {
     }
   }, [id]);
 
+  const handleClose = () => {
+    if (id) {
+      const currentParams = new URLSearchParams(searchParams.toString());
+      navigate(`/?${currentParams.toString()}`);
+    }
+  };
+
   return (
     <section className="movie-details">
       {movie ? (
         <div className="movie-details__content">
+          <button className="close-button" onClick={handleClose}>
+            Close
+          </button>
           <img
             src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`}
             alt={movie.title}

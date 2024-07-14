@@ -84,7 +84,7 @@ const App = () => {
           data.length > 0 ? (
             <List movies={data} page={page} setPage={setPage} total={total} />
           ) : (
-            <p>Not Found</p>
+            <p>No movies found</p>
           )
         ) : (
           <Loader />

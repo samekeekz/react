@@ -1,122 +1,130 @@
 .movie-details {
-    display: flex;
-    align-items: flex-start;
-    gap: 2.5rem; /* Equivalent to Tailwind's gap-10 */
-    width: 50%;
-    max-height: 100%;
-    padding-top: 60px;
+  display: flex;
+  align-items: flex-start;
+  gap: 2.5rem; /* Equivalent to Tailwind's gap-10 */
+  width: 50%;
+  max-height: 100%;
+  padding-top: 60px;
 }
 
 .movie-details__content {
-    display: flex;
-    flex-direction: column;
-    gap: 2.5rem; /* Equivalent to Tailwind's gap-10 */
-    align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem; /* Equivalent to Tailwind's gap-10 */
+  align-items: flex-start;
 }
 
 .movie-details__backdrop {
-    width: 100%;
-    flex-grow: 1;
-    border-radius: 20px;
+  width: 100%;
+  flex-grow: 1;
+  border-radius: 20px;
 }
 
 .movie-details__info {
-    display: flex;
-    justify-content: center;
-    border-radius: 10px;
-    padding: 2rem; /* Equivalent to Tailwind's p-8 */
-    background-color: #697791;
+  display: flex;
+  justify-content: center;
+  border-radius: 10px;
+  padding: 2rem; /* Equivalent to Tailwind's p-8 */
+  background-color: #697791;
 }
 
 .movie-details__poster {
-    margin-right: 2rem; /* Equivalent to Tailwind's mr-8 */
+  margin-right: 2rem; /* Equivalent to Tailwind's mr-8 */
 }
 
 .movie-details__poster-cover {
-    border-radius: 0.5rem; /* Equivalent to Tailwind's rounded-lg */
-    overflow: hidden;
+  border-radius: 0.5rem; /* Equivalent to Tailwind's rounded-lg */
+  overflow: hidden;
 }
 
 .movie-details__poster-image {
-    width: 100%;
+  width: 100%;
 }
 
 .movie-details__text {
-    color: white;
+  color: white;
 }
 
 .movie-details__title {
-    font-size: 1.875rem; /* Equivalent to Tailwind's text-3xl */
-    font-weight: 700; /* Equivalent to Tailwind's font-bold */
-    margin-bottom: 1rem; /* Equivalent to Tailwind's mb-4 */
+  font-size: 1.875rem; /* Equivalent to Tailwind's text-3xl */
+  font-weight: 700; /* Equivalent to Tailwind's font-bold */
+  margin-bottom: 1rem; /* Equivalent to Tailwind's mb-4 */
 }
 
 .movie-details__status {
-    margin-bottom: 1rem; /* Equivalent to Tailwind's mb-4 */
+  margin-bottom: 1rem; /* Equivalent to Tailwind's mb-4 */
 }
 
 .movie-details__imdb {
-    margin-right: 1rem; /* Equivalent to Tailwind's mr-4 */
+  margin-right: 1rem; /* Equivalent to Tailwind's mr-4 */
 }
 
 .movie-details__overview {
-    font-size: 1.125rem; /* Equivalent to Tailwind's text-lg */
-    margin-bottom: 1.5rem; /* Equivalent to Tailwind's mb-6 */
+  font-size: 1.125rem; /* Equivalent to Tailwind's text-lg */
+  margin-bottom: 1.5rem; /* Equivalent to Tailwind's mb-6 */
 }
 
 .movie-details__meta {
-    display: grid;
-    grid-template-columns: repeat(1, minmax(0, 1fr));
-    gap: 1rem; /* Equivalent to Tailwind's gap-4 */
-    margin-bottom: 1.5rem; /* Equivalent to Tailwind's mb-6 */
-    max-width: 100%;
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 1rem; /* Equivalent to Tailwind's gap-4 */
+  margin-bottom: 1.5rem; /* Equivalent to Tailwind's mb-6 */
+  max-width: 100%;
 }
 
 @media (min-width: 768px) {
-    .movie-details__meta {
-        grid-template-columns: repeat(2, minmax(0, 1fr)); /* Equivalent to Tailwind's md:grid-cols-2 */
-    }
+  .movie-details__meta {
+    grid-template-columns: repeat(
+      2,
+      minmax(0, 1fr)
+    ); /* Equivalent to Tailwind's md:grid-cols-2 */
+  }
 }
 
 @media (min-width: 1024px) {
-    .movie-details__meta {
-        grid-template-columns: repeat(3, minmax(0, 1fr)); /* Equivalent to Tailwind's lg:grid-cols-3 */
-    }
+  .movie-details__meta {
+    grid-template-columns: repeat(
+      3,
+      minmax(0, 1fr)
+    ); /* Equivalent to Tailwind's lg:grid-cols-3 */
+  }
 }
 
 .movie-details__meta-title {
-    font-weight: 700; /* Equivalent to Tailwind's font-bold */
+  font-weight: 700; /* Equivalent to Tailwind's font-bold */
 }
 
 .movie-details__meta-link {
-    color: #7dd3fc; /* Equivalent to Tailwind's text-blue-300 */
-    text-wrap: wrap;
-    word-break: break-all;
+  color: #7dd3fc; /* Equivalent to Tailwind's text-blue-300 */
+  text-wrap: wrap;
+  word-break: break-all;
 }
 
 .movie-details__meta-link:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 .close-button {
-    position: absolute;
-    top: 40px;
-    right: 40px;
-    background-color: #ffffff;
-    color: #333333;
-    border: 1px solid #cccccc;
-    padding: 8px 16px;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: bold;
-    border-radius: 4px;
-    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  position: absolute;
+  top: 40px;
+  right: 40px;
+  background-color: #ffffff;
+  color: #333333;
+  border: 1px solid #cccccc;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  border-radius: 4px;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease,
+    border-color 0.3s ease;
 
-    /* Optional: Hover effect */
-    &:hover {
-        background-color: #e0e0e0;
-        color: #000000;
-        border-color: #999999;
-    }
+  /* Optional: Hover effect */
+  &:hover {
+    background-color: #e0e0e0;
+    color: #000000;
+    border-color: #999999;
+  }
 }
-

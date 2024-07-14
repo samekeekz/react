@@ -22,12 +22,11 @@ body {
   gap: 40px;
 }
 
-
-.right_side{
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    gap: 20px;
-    width: 50%;
-    flex-grow: 1;
+.right_side {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 20px;
+  width: 50%;
+  flex-grow: 1;
 }

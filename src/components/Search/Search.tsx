@@ -12,7 +12,7 @@ const Search = ({ searchQuery, setSearchQuery }: Props) => {
     const formData = new FormData(event.currentTarget);
     const searchTerm = formData.get("search") as string;
 
-    localStorage.setItem("searchTerm", searchTerm);
+    setSearchQuery(searchTerm);
   };
 
   return (

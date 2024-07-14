@@ -1,7 +1,9 @@
+// ErrorBoundary.tsx
 import { Component, ErrorInfo, ReactNode } from "react";
+import ErrorFallback from "./ErrorFallback"; // Import your ErrorFallback component
+import "./ErrorBoundary.css";
 
 interface ErrorBoundaryProps {
-  fallback: ReactNode;
   children: ReactNode;
 }
 
@@ -25,9 +27,13 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
     console.error(error, errorInfo);
   }
 
+  handleRetry = () => {
+    this.setState({ hasError: false });
+  };
+
   render() {
     if (this.state.hasError) {
-      return this.props.fallback;
+      return <ErrorFallback onRetry={this.handleRetry} />;
     }
     return this.props.children;
   }

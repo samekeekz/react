@@ -2,22 +2,43 @@ import { useState, useEffect } from "react";
 import List, { Movie } from "./components/List/List.tsx";
 import "../src/index.css";
 import Search from "./components/Search/Search.tsx";
+import Loader from "./components/Loader/Loader.tsx";
+import useSearchQuery from "./hooks/useSearchQuery.ts";
+import {
+  Outlet,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from "react-router-dom";
 
 const App = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState<Movie[]>([]);
-  const [searchQuery, setSearchQuery] = useState(
-    localStorage.getItem("searchTerm") ?? ""
+  const [searchQuery, setSearchQuery] = useSearchQuery("");
+  const [page, setPage] = useState(
+    parseInt(searchParams.get("frontPage") || "1")
   );
+  const [total, setTotal] = useState(0);
+  const navigate = useNavigate();
+  const { id } = useParams<{ id: string }>();
 
   useEffect(() => {
     fetchData();
+  }, [searchQuery, page]);
+
+  useEffect(() => {
+    setPage(1);
   }, [searchQuery]);
 
+  useEffect(() => {
+    setSearchParams({ frontPage: page.toString() });
+  }, [page]);
+
   const fetchData = async () => {
-    let fetchLink = `https://api.themoviedb.org/3/trending/tv/day?language=en-US`;
+    let fetchLink = `https://api.themoviedb.org/3/trending/movie/day?language=en-US&page=${page}`;
     if (searchQuery) {
-      fetchLink = `https://api.themoviedb.org/3/search/multi?query=${searchQuery}&include_adult=true&language=en-US&page=1`;
+      fetchLink = `https://api.themoviedb.org/3/search/multi?query=${searchQuery}&include_adult=true&language=en-US&page=1&page=${page}`;
     }
     setLoading(true);
     try {
@@ -37,6 +58,10 @@ const App = () => {
 
       const dataFromServer = await response.json();
       setData(dataFromServer.results);
+      setTotal(dataFromServer.total_pages);
+      if (dataFromServer.total_pages > 20) {
+        setTotal(20);
+      }
     } catch (error) {
       console.error(error);
     } finally {
@@ -44,14 +69,28 @@ const App = () => {
     }
   };
 
+  const handleClick = () => {
+    if (id) {
+      const currentParams = new URLSearchParams(searchParams.toString());
+      navigate(`/?${currentParams.toString()}`);
+    }
+  };
+
   return (
     <div className="container">
-      <Search searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
-      {!loading ? (
-        <List movies={data} />
-      ) : (
-        <p className="text-white">Loading...</p>
-      )}
+      <div className="right_side" onClick={handleClick}>
+        <Search searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+        {!loading ? (
+          data.length > 0 ? (
+            <List movies={data} page={page} setPage={setPage} total={total} />
+          ) : (
+            <p>Not Found</p>
+          )
+        ) : (
+          <Loader />
+        )}
+      </div>
+      <Outlet />
     </div>
   );
 };

@@ -1,5 +1,4 @@
 import Card from "../Card/Card.tsx";
-import { Component } from "react";
 import "./List.css";
 
 export type Movies = {
@@ -14,25 +13,21 @@ export type Movie = {
   poster_path: string;
 };
 
-class List extends Component<Movies> {
-  render() {
-    const { movies } = this.props;
-
-    return (
-      <div className="grid-container">
-        {movies.length > 0 &&
-          movies.map((movie) => (
-            <Card
-              id={movie.id}
-              key={movie.id}
-              title={movie.original_title || movie.name}
-              releaseDate={movie.release_date}
-              poster={movie.poster_path}
-            />
-          ))}
-      </div>
-    );
-  }
-}
+const List = ({ movies }: Movies) => {
+  return (
+    <div className="grid-container">
+      {movies.length > 0 &&
+        movies.map((movie) => (
+          <Card
+            id={movie.id}
+            key={movie.id}
+            title={movie.original_title || movie.name}
+            releaseDate={movie.release_date}
+            poster={movie.poster_path}
+          />
+        ))}
+    </div>
+  );
+};
 
 export default List;

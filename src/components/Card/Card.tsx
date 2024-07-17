@@ -19,7 +19,7 @@ const Card = ({ id, title, releaseDate, poster }: Props) => {
 
   return (
     <div className="card" onClick={handleClick}>
-      <div className="group">
+      <div className="group ">
         <img
           src={`https://image.tmdb.org/t/p/w500${poster}`}
           alt={title}

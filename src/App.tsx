@@ -1,73 +1,76 @@
-import { useState, useEffect } from "react";
-import List, { Movie } from "./components/List/List.tsx";
+import { useEffect } from "react";
+import List from "./components/List/List.tsx";
 import "../src/index.css";
 import Search from "./components/Search/Search.tsx";
 import Loader from "./components/Loader/Loader.tsx";
-import useSearchQuery from "./hooks/useSearchQuery.ts";
 import {
   Outlet,
   useNavigate,
   useParams,
   useSearchParams,
 } from "react-router-dom";
+import { RootState } from "./store";
+import { useFetchMoviesQuery } from "./store/api/apiSlice.ts";
+import {
+  setCurrentPage,
+  setCurrentPageData,
+  setTotal,
+} from "./store/slices/movieSlice.ts";
+import { hideFlyout, showFlyout } from "./store/slices/flyoutSlice.ts";
+import Flyout from "./components/Flyout/Flyout.tsx";
+import { useAppDispatch, useAppSelector } from "./store/hooks.ts";
+import ThemeToggle from "./components/ThemeToggle/ThemeToggle.tsx";
+import { useTheme } from "./hooks/useTheme.ts";
 
 const App = () => {
+  const { theme } = useTheme();
   const [searchParams, setSearchParams] = useSearchParams();
-  const [loading, setLoading] = useState(true);
-  const [data, setData] = useState<Movie[]>([]);
-  const [searchQuery, setSearchQuery] = useSearchQuery("");
-  const [page, setPage] = useState(
-    parseInt(searchParams.get("frontPage") || "1")
-  );
-  const [total, setTotal] = useState(0);
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
+  const currentPage = useAppSelector(
+    (state: RootState) => state.movies.currentPage
+  );
+  const currentPageData = useAppSelector(
+    (state: RootState) => state.movies.currentPageData
+  );
+  const total = useAppSelector((state: RootState) => state.movies.total);
+  const searchQuery =
+    new URLSearchParams(searchParams.toString()).get("searchQuery") || "";
+  const selectedItems = useAppSelector(
+    (state: RootState) => state.movies.selectedItems
+  );
+  const flyoutVisible = useAppSelector(
+    (state: RootState) => state.flyout.visible
+  );
 
   useEffect(() => {
-    fetchData();
-  }, [searchQuery, page]);
-
-  useEffect(() => {
-    setPage(1);
-  }, [searchQuery]);
-
-  useEffect(() => {
-    setSearchParams({ frontPage: page.toString() });
-  }, [page]);
-
-  const fetchData = async () => {
-    let fetchLink = `https://api.themoviedb.org/3/trending/movie/day?language=en-US&page=${page}`;
-    if (searchQuery) {
-      fetchLink = `https://api.themoviedb.org/3/search/multi?query=${searchQuery}&include_adult=true&language=en-US&page=1&page=${page}`;
+    if (selectedItems.length > 0) {
+      dispatch(showFlyout());
+    } else {
+      dispatch(hideFlyout());
     }
-    setLoading(true);
-    try {
-      const response = await fetch(fetchLink, {
-        method: "GET",
-        headers: {
-          accept: "application/json",
-          Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJjYTMyMjRlNmI4OGQzY2Y3OTZmNjJiNDA4Y2I1MjhkYiIsInN1YiI6IjY2MWJmMTEwYTRhZjhmMDE3YzM2ZmQ1OSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.FdsWIE47QwDxR_g0fu87YukNqnQ7NGb_LAujf1fGyco",
-        },
-      });
+  }, [selectedItems, dispatch]);
 
-      if (!response.ok) {
-        console.error("Error:", response.statusText);
-        return;
-      }
+  const { data, isLoading } = useFetchMoviesQuery({
+    query: searchQuery,
+    page: currentPage,
+  });
 
-      const dataFromServer = await response.json();
-      setData(dataFromServer.results);
-      setTotal(dataFromServer.total_pages);
-      if (dataFromServer.total_pages > 20) {
-        setTotal(20);
-      }
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false);
+  useEffect(() => {
+    if (data) {
+      dispatch(setCurrentPageData(data.results));
+      dispatch(setTotal(data.total_pages > 20 ? 20 : data.total_pages));
     }
-  };
+  }, [data, dispatch]);
+
+  useEffect(() => {
+    setSearchParams({ frontPage: currentPage.toString() });
+  }, [currentPage, setSearchParams]);
+
+  useEffect(() => {
+    dispatch(setCurrentPage(1));
+  }, [searchQuery, dispatch]);
 
   const handleClick = () => {
     if (id) {
@@ -76,19 +79,42 @@ const App = () => {
     }
   };
 
+  useEffect(() => {
+    document.body.className = theme;
+
+    return () => {
+      document.body.className = "";
+    };
+  }, [theme]);
+
   return (
     <div className="container">
-      <div className="right_side" onClick={handleClick}>
-        <Search searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
-        {!loading ? (
-          data.length > 0 ? (
-            <List movies={data} page={page} setPage={setPage} total={total} />
+      <div className="right_side">
+        <div className="wrapper_theme">
+          <ThemeToggle />
+        </div>
+        <Search
+          searchQuery={searchQuery}
+          setSearchQuery={(query) => setSearchParams({ searchQuery: query })}
+        />
+        {flyoutVisible && <Flyout />}
+
+        <div onClick={handleClick}>
+          {!isLoading ? (
+            currentPageData.length > 0 ? (
+              <List
+                movies={currentPageData}
+                page={currentPage}
+                setPage={(page) => dispatch(setCurrentPage(page))}
+                total={total}
+              />
+            ) : (
+              <p>No movies found</p>
+            )
           ) : (
-            <p>No movies found</p>
-          )
-        ) : (
-          <Loader />
-        )}
+            <Loader />
+          )}
+        </div>
       </div>
       <Outlet />
     </div>

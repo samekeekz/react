@@ -1,5 +1,7 @@
 import "./Card.css";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../store/hooks.ts";
+import { toggleItem } from "../../store/slices/movieSlice.ts";
 
 type Props = {
   id: number;
@@ -11,6 +13,20 @@ type Props = {
 const Card = ({ id, title, releaseDate, poster }: Props) => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  const dispatch = useAppDispatch();
+  const selectedItems = useAppSelector((state) => state.movies.selectedItems);
+  const isSelected = selectedItems.some((item) => item.id === id);
+
+  const handleCheckboxChange = () => {
+    dispatch(
+      toggleItem({
+        id,
+        name: title || "",
+        release_date: releaseDate,
+        poster_path: poster,
+      })
+    );
+  };
 
   const handleClick = () => {
     const currentParams = new URLSearchParams(searchParams.toString());
@@ -18,8 +34,14 @@ const Card = ({ id, title, releaseDate, poster }: Props) => {
   };
 
   return (
-    <div className="card" onClick={handleClick}>
-      <div className="group ">
+    <div
+      className="card"
+      onClick={(e) => {
+        e.stopPropagation();
+        handleClick();
+      }}
+    >
+      <div className="group">
         <img
           src={`https://image.tmdb.org/t/p/w500${poster}`}
           alt={title}
@@ -75,6 +97,14 @@ const Card = ({ id, title, releaseDate, poster }: Props) => {
             {releaseDate}
           </div>
         )}
+      </div>
+      <div className="checkbox-container">
+        <input
+          type="checkbox"
+          checked={isSelected}
+          onChange={handleCheckboxChange}
+          className="card-checkbox"
+        />
       </div>
     </div>
   );

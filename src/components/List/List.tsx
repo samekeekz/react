@@ -2,24 +2,13 @@ import Card from "../Card/Card.tsx";
 import "./List.css";
 import Pagination from "../Pagination/Pagination.tsx";
 import { useEffect, useRef } from "react";
+import { Movie } from "../../store/slices/movieSlice.ts";
 
 type Props = {
   movies: Movie[];
   page: number;
   setPage: (page: number) => void;
   total: number;
-};
-
-export type Movies = {
-  movies: Movie[];
-};
-
-export type Movie = {
-  id: number;
-  original_title: string;
-  name?: string;
-  release_date: string;
-  poster_path: string;
 };
 
 const List = ({ movies, page, setPage, total }: Props) => {
